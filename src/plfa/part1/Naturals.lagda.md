@@ -82,6 +82,7 @@ Write out `7` in longhand.
 
 ```
 -- Your code goes here
+_ = suc (suc (suc (suc (suc (suc (suc zero))))))
 ```
 
 
@@ -432,6 +433,21 @@ Compute `3 + 4`, writing out your reasoning as a chain of equations.
 
 ```
 -- Your code goes here
+_ : 3 + 4 ≡ 7
+_ =
+  begin
+    3 + 4
+  ≡⟨⟩
+    suc (2 + 4)
+  ≡⟨⟩
+    suc (suc (1 + 4))
+  ≡⟨⟩
+    suc (suc (suc (0 + 4)))
+  ≡⟨⟩
+    suc (suc (suc 4))
+  ≡⟨⟩
+    7
+  ∎
 ```
 
 
@@ -493,6 +509,20 @@ Compute `3 * 4`, writing out your reasoning as a chain of equations.
 
 ```
 -- Your code goes here
+_ =
+  begin
+    3 * 4
+  ≡⟨⟩
+    4 + (2 * 4)
+  ≡⟨⟩
+    4 + (4 + (1 * 4))
+  ≡⟨⟩
+    4 + (4 + (4 + (0 * 4)))
+  ≡⟨⟩
+    4 + (4 + (4 + 0))
+  ≡⟨⟩
+    12
+  ∎
 ```
 
 
@@ -507,8 +537,13 @@ Check that `3 ^ 4` is `81`.
 
 ```
 -- Your code goes here
-```
+_^_ : ℕ → ℕ → ℕ
+m ^ zero  = suc zero
+m ^ suc n = m * (m ^ n)
 
+_ : 3 ^ 4 ≡ 81
+_ = refl
+```
 
 
 ## Monus
@@ -572,6 +607,33 @@ Compute `5 ∸ 3` and `3 ∸ 5`, writing out your reasoning as a chain of equati
 
 ```
 -- Your code goes here
+_ : 5 ∸ 3 ≡ 2
+_ =
+  begin
+    5 ∸ 3
+  ≡⟨⟩
+    4 ∸ 2
+  ≡⟨⟩
+    3 ∸ 1
+  ≡⟨⟩
+    2 ∸ 0
+  ≡⟨⟩
+    2
+  ∎
+
+_ : 3 ∸ 5 ≡ 0
+_ =
+  begin
+    3 ∸ 5
+  ≡⟨⟩
+    2 ∸ 4
+  ≡⟨⟩
+    1 ∸ 3
+  ≡⟨⟩
+    0 ∸ 2
+  ≡⟨⟩
+    0
+  ∎
 ```
 
 
@@ -918,6 +980,41 @@ Confirm that these both give the correct answer for zero through four.
 
 ```
 -- Your code goes here
+inc : Bin → Bin
+inc nil = x1 nil
+inc (x0 n) = x1 n
+inc (x1 n) = x0 (inc n)
+
+to : ℕ → Bin
+to zero = x0 nil
+to (suc n) = inc (to n)
+
+_ : to zero ≡ x0 nil
+_ = refl
+_ : to 1 ≡ x1 nil
+_ = refl
+_ : to 2 ≡ x0 x1 nil
+_ = refl
+_ : to 3 ≡ x1 x1 nil
+_ = refl
+_ : to 4 ≡ x0 x0 x1 nil
+_ = refl
+
+from : Bin → ℕ
+from nil = 0
+from (x0 n) = 2 * (from n)
+from (x1 n) = 1 + 2 * from n
+
+_ : from (x0 nil) ≡ 0
+_ = refl
+_ : from (x1 nil) ≡ 1
+_ = refl
+_ : from (x0 x1 nil) ≡ 2
+_ = refl
+_ : from (x1 x1 nil) ≡ 3
+_ = refl
+_ : from (x0 x0 x1 nil) ≡ 4
+_ = refl
 ```
 
 
